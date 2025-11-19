@@ -4,12 +4,18 @@ const STORAGE_KEY = 'smart-notes-v1';
 
 function generateSummary(text) {
   if (!text || text.trim().length === 0) return 'Nothing to summarize yet.';
-  const cleaned = text.trim().replace(/\s+/g, ' ');
+  const cleaned = text.trim().replace(/\s+/g, ' '    </div>
+  </div>
+);
   if (cleaned.length <= 160) return cleaned;
   const slicePoint = 160;
-  const periodIndex = cleaned.indexOf('.', 120);
+  const periodIndex = cleaned.indexOf('.', 120    </div>
+  </div>
+);
   if (periodIndex !== -1 && periodIndex < 220) {
-    return cleaned.slice(0, periodIndex + 1);
+    return cleaned.slice(0, periodIndex + 1    </div>
+  </div>
+);
   }
   return cleaned.slice(0, slicePoint) + '...';
 }
@@ -19,55 +25,105 @@ function parseTags(input) {
   return input
     .split(',')
     .map((t) => t.trim())
-    .filter((t) => t.length > 0);
+    .filter((t) => t.length > 0    </div>
+  </div>
+);
 }
 
 function App() {
-  const [notes, setNotes] = useState([]);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [tagsInput, setTagsInput] = useState('');
-  const [currentId, setCurrentId] = useState(null);
-  const [search, setSearch] = useState('');
-  const [activeTag, setActiveTag] = useState('all');
-  const [summary, setSummary] = useState('');
+  const [notes, setNotes] = useState([]    </div>
+  </div>
+);
+  const [title, setTitle] = useState(''    </div>
+  </div>
+);
+  const [content, setContent] = useState(''    </div>
+  </div>
+);
+  const [tagsInput, setTagsInput] = useState(''    </div>
+  </div>
+);
+  const [currentId, setCurrentId] = useState(null    </div>
+  </div>
+);
+  const [search, setSearch] = useState(''    </div>
+  </div>
+);
+  const [activeTag, setActiveTag] = useState('all'    </div>
+  </div>
+);
+  const [summary, setSummary] = useState(''    </div>
+  </div>
+);
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) setNotes(JSON.parse(saved));
+      const saved = localStorage.getItem(STORAGE_KEY    </div>
+  </div>
+);
+      if (saved) setNotes(JSON.parse(saved)    </div>
+  </div>
+);
     } catch (err) {
-      console.error('Failed to load notes:', err);
+      console.error('Failed to load notes:', err    </div>
+  </div>
+);
     }
-  }, []);
+  }, []    </div>
+  </div>
+);
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes)    </div>
+  </div>
+);
     } catch (err) {
-      console.error('Failed to save notes:', err);
+      console.error('Failed to save notes:', err    </div>
+  </div>
+);
     }
-  }, [notes]);
+  }, [notes]    </div>
+  </div>
+);
 
   const resetForm = () => {
-    setTitle('');
-    setContent('');
-    setTagsInput('');
-    setCurrentId(null);
-    setSummary('');
+    setTitle(''    </div>
+  </div>
+);
+    setContent(''    </div>
+  </div>
+);
+    setTagsInput(''    </div>
+  </div>
+);
+    setCurrentId(null    </div>
+  </div>
+);
+    setSummary(''    </div>
+  </div>
+);
   };
 
   const handleSave = () => {
     const trimmedTitle = title.trim() || 'Untitled note';
-    const trimmedContent = content.trim();
+    const trimmedContent = content.trim(    </div>
+  </div>
+);
 
     if (!trimmedContent) {
-      alert('Note content cannot be empty.');
+      alert('Note content cannot be empty.'    </div>
+  </div>
+);
       return;
     }
 
-    const tags = parseTags(tagsInput);
-    const now = new Date().toISOString();
+    const tags = parseTags(tagsInput    </div>
+  </div>
+);
+    const now = new Date().toISOString(    </div>
+  </div>
+);
 
     if (currentId) {
       setNotes((prev) =>
@@ -76,7 +132,9 @@ function App() {
             ? { ...n, title: trimmedTitle, content: trimmedContent, tags, updatedAt: now }
             : n
         )
-      );
+          </div>
+  </div>
+);
     } else {
       const newNote = {
         id: Date.now().toString(),
@@ -87,25 +145,45 @@ function App() {
         createdAt: now,
         updatedAt: now,
       };
-      setNotes((prev) => [newNote, ...prev]);
+      setNotes((prev) => [newNote, ...prev]    </div>
+  </div>
+);
     }
 
-    resetForm();
+    resetForm(    </div>
+  </div>
+);
   };
 
   const handleEdit = (note) => {
-    setCurrentId(note.id);
-    setTitle(note.title);
-    setContent(note.content);
-    setTagsInput((note.tags || []).join(', '));
-    setSummary('');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentId(note.id    </div>
+  </div>
+);
+    setTitle(note.title    </div>
+  </div>
+);
+    setContent(note.content    </div>
+  </div>
+);
+    setTagsInput((note.tags || []).join(', ')    </div>
+  </div>
+);
+    setSummary(''    </div>
+  </div>
+);
+    window.scrollTo({ top: 0, behavior: 'smooth' }    </div>
+  </div>
+);
   };
 
   const handleDelete = (id) => {
     if (!window.confirm('Delete this note?')) return;
-    setNotes((prev) => prev.filter((n) => n.id !== id));
-    if (currentId === id) resetForm();
+    setNotes((prev) => prev.filter((n) => n.id !== id)    </div>
+  </div>
+);
+    if (currentId === id) resetForm(    </div>
+  </div>
+);
   };
 
   const togglePin = (id) => {
@@ -113,24 +191,47 @@ function App() {
       prev.map((n) =>
         n.id === id ? { ...n, pinned: !n.pinned } : n
       )
-    );
+        </div>
+  </div>
+);
   };
 
   const handleSummarize = () => {
-    setSummary(generateSummary(content));
+    setSummary(generateSummary(content)    </div>
+  </div>
+);
   };
 
   const allTags = Array.from(
     new Set(notes.flatMap((n) => n.tags || []))
-  ).sort((a, b) => a.localeCompare(b));
+  ).sort((a, b) => a.localeCompare(b)    </div>
+  </div>
+);
 
-  const normalizedSearch = search.toLowerCase();
+  const normalizedSearch = search.toLowerCase(    </div>
+  </div>
+);
 
   const filteredNotes = [...notes]
     .sort((a, b) => {
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
-      return (b.updatedAt || '').localeCompare(a.updatedAt || '');
+      return (
+  <div
+    style={{
+      minHeight: "100vh",
+      padding: "1.5rem",
+      fontFamily: "system-ui, sans-serif",
+      background: "#020617",
+      color: "#e5e7eb",
+      display: "flex",
+      justifyContent: "center",
+    }}
+  >
+    <div style={{ width: "100%", maxWidth: "1100px" }}>
+b.updatedAt || '').localeCompare(a.updatedAt || ''    </div>
+  </div>
+);
     })
     .filter((note) => {
       if (activeTag !== 'all' && !(note.tags || []).includes(activeTag)) {
@@ -142,11 +243,30 @@ function App() {
         ' ' +
         (note.content || '') +
         ' ' +
-        (note.tags || []).join(' ');
-      return haystack.toLowerCase().includes(normalizedSearch);
-    });
+        (note.tags || []).join(' '    </div>
+  </div>
+);
+      return haystack.toLowerCase().includes(normalizedSearch    </div>
+  </div>
+);
+    }    </div>
+  </div>
+);
 
   return (
+  <div
+    style={{
+      minHeight: "100vh",
+      padding: "1.5rem",
+      fontFamily: "system-ui, sans-serif",
+      background: "#020617",
+      color: "#e5e7eb",
+      display: "flex",
+      justifyContent: "center",
+    }}
+  >
+    <div style={{ width: "100%", maxWidth: "1100px" }}>
+
     <div style={{ minHeight: '100vh', padding: '1.5rem', fontFamily: 'system-ui, sans-serif', background: '#020617', color: '#e5e7eb' }}>
       <header style={{ marginBottom: '1rem' }}>
         <h1 style={{ margin: 0, fontSize: '1.6rem' }}>Smart Notes</h1>
@@ -426,7 +546,9 @@ function App() {
         </section>
       </main>
     </div>
-  );
+      </div>
+  </div>
+);
 }
 
 export default App;
