@@ -154,490 +154,488 @@ function App() {
         fontFamily: 'system-ui, sans-serif',
         background: '#020617',
         color: '#e5e7eb',
-        display: 'flex',
-        justifyContent: 'center',
+        maxWidth: '1100px',
+        margin: '0 auto',
       }}
     >
-      <div style={{ width: '100%', maxWidth: '1100px' }}>
-        <header style={{ marginBottom: '1rem' }}>
-          <h1 style={{ margin: 0, fontSize: '1.6rem' }}>Smart Notes</h1>
-          <p style={{ margin: '0.25rem 0', color: '#9ca3af' }}>
-            Notes with tags, search, pins & a fake AI summary.
-          </p>
-        </header>
+      <header style={{ marginBottom: '1rem' }}>
+        <h1 style={{ margin: 0, fontSize: '1.6rem' }}>Smart Notes</h1>
+        <p style={{ margin: '0.25rem 0', color: '#9ca3af' }}>
+          Notes with tags, search, pins & a fake AI summary.
+        </p>
+      </header>
 
-        <main
+      <main
+        style={{
+          display: 'grid',
+          gap: '1rem',
+          gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.4fr)',
+        }}
+      >
+        {/* Left: form */}
+        <section
           style={{
-            display: 'grid',
-            gap: '1rem',
-            gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.4fr)',
+            padding: '1rem',
+            borderRadius: '0.75rem',
+            background: '#020617',
+            border: '1px solid #1f2937',
           }}
         >
-          {/* Left: form */}
-          <section
+          <div
             style={{
-              padding: '1rem',
-              borderRadius: '0.75rem',
-              background: '#020617',
-              border: '1px solid #1f2937',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '0.75rem',
             }}
           >
+            <h2
+              style={{
+                margin: 0,
+                fontSize: '0.95rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                color: '#9ca3af',
+              }}
+            >
+              {currentId ? 'Edit note' : 'New note'}
+            </h2>
+            {currentId && (
+              <button
+                type="button"
+                onClick={resetForm}
+                style={{
+                  fontSize: '0.8rem',
+                  padding: '0.25rem 0.6rem',
+                  borderRadius: '999px',
+                  border: '1px solid #4b5563',
+                  background: 'transparent',
+                  color: '#e5e7eb',
+                  cursor: 'pointer',
+                }}
+              >
+                + New
+              </button>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label>
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                  color: '#9ca3af',
+                  marginBottom: '0.2rem',
+                }}
+              >
+                Title
+              </div>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Meeting notes..."
+                style={{
+                  width: '100%',
+                  padding: '0.5rem 0.6rem',
+                  borderRadius: '0.6rem',
+                  border: '1px solid #374151',
+                  background: '#020617',
+                  color: '#e5e7eb',
+                }}
+              />
+            </label>
+
+            <label>
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                  color: '#9ca3af',
+                  marginBottom: '0.2rem',
+                }}
+              >
+                Content
+              </div>
+              <textarea
+                rows="5"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Write your thoughts here..."
+                style={{
+                  width: '100%',
+                  padding: '0.5rem 0.6rem',
+                  borderRadius: '0.6rem',
+                  border: '1px solid #374151',
+                  background: '#020617',
+                  color: '#e5e7eb',
+                  resize: 'vertical',
+                }}
+              />
+            </label>
+
+            <label>
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                  color: '#9ca3af',
+                  marginBottom: '0.2rem',
+                }}
+              >
+                Tags
+              </div>
+              <input
+                type="text"
+                value={tagsInput}
+                onChange={(e) => setTagsInput(e.target.value)}
+                placeholder="work, ideas, todo"
+                style={{
+                  width: '100%',
+                  padding: '0.5rem 0.6rem',
+                  borderRadius: '0.6rem',
+                  border: '1px solid #374151',
+                  background: '#020617',
+                  color: '#e5e7eb',
+                }}
+              />
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  color: '#9ca3af',
+                  marginTop: '0.15rem',
+                }}
+              >
+                Separate tags with commas.
+              </div>
+            </label>
+
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '0.75rem',
+                flexWrap: 'wrap',
+                gap: '0.5rem',
+                marginTop: '0.3rem',
               }}
             >
-              <h2
+              <button
+                type="button"
+                onClick={handleSave}
                 style={{
-                  margin: 0,
-                  fontSize: '0.95rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                  color: '#9ca3af',
+                  border: 'none',
+                  borderRadius: '999px',
+                  padding: '0.4rem 0.9rem',
+                  fontSize: '0.85rem',
+                  fontWeight: 500,
+                  background: '#38bdf8',
+                  color: '#020617',
+                  cursor: 'pointer',
                 }}
               >
-                {currentId ? 'Edit note' : 'New note'}
-              </h2>
-              {currentId && (
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  style={{
-                    fontSize: '0.8rem',
-                    padding: '0.25rem 0.6rem',
-                    borderRadius: '999px',
-                    border: '1px solid #4b5563',
-                    background: 'transparent',
-                    color: '#e5e7eb',
-                    cursor: 'pointer',
-                  }}
-                >
-                  + New
-                </button>
-              )}
+                {currentId ? 'Save changes' : 'Add note'}
+              </button>
+              <button
+                type="button"
+                onClick={handleSummarize}
+                style={{
+                  borderRadius: '999px',
+                  padding: '0.4rem 0.9rem',
+                  fontSize: '0.85rem',
+                  background: '#020617',
+                  border: '1px solid #4b5563',
+                  color: '#e5e7eb',
+                  cursor: 'pointer',
+                }}
+              >
+                AI Summarize (fake)
+              </button>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <label>
-                <div
-                  style={{
-                    fontSize: '0.75rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: '#9ca3af',
-                    marginBottom: '0.2rem',
-                  }}
-                >
-                  Title
-                </div>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Meeting notes..."
-                  style={{
-                    width: '100%',
-                    padding: '0.5rem 0.6rem',
-                    borderRadius: '0.6rem',
-                    border: '1px solid #374151',
-                    background: '#020617',
-                    color: '#e5e7eb',
-                  }}
-                />
-              </label>
-
-              <label>
-                <div
-                  style={{
-                    fontSize: '0.75rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: '#9ca3af',
-                    marginBottom: '0.2rem',
-                  }}
-                >
-                  Content
-                </div>
-                <textarea
-                  rows="5"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="Write your thoughts here..."
-                  style={{
-                    width: '100%',
-                    padding: '0.5rem 0.6rem',
-                    borderRadius: '0.6rem',
-                    border: '1px solid #374151',
-                    background: '#020617',
-                    color: '#e5e7eb',
-                    resize: 'vertical',
-                  }}
-                />
-              </label>
-
-              <label>
-                <div
-                  style={{
-                    fontSize: '0.75rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: '#9ca3af',
-                    marginBottom: '0.2rem',
-                  }}
-                >
-                  Tags
-                </div>
-                <input
-                  type="text"
-                  value={tagsInput}
-                  onChange={(e) => setTagsInput(e.target.value)}
-                  placeholder="work, ideas, todo"
-                  style={{
-                    width: '100%',
-                    padding: '0.5rem 0.6rem',
-                    borderRadius: '0.6rem',
-                    border: '1px solid #374151',
-                    background: '#020617',
-                    color: '#e5e7eb',
-                  }}
-                />
-                <div
-                  style={{
-                    fontSize: '0.75rem',
-                    color: '#9ca3af',
-                    marginTop: '0.15rem',
-                  }}
-                >
-                  Separate tags with commas.
-                </div>
-              </label>
-
+            {summary && (
               <div
                 style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '0.5rem',
-                  marginTop: '0.3rem',
+                  marginTop: '0.6rem',
+                  padding: '0.5rem 0.6rem',
+                  borderRadius: '0.6rem',
+                  border: '1px dashed #4b5563',
+                  fontSize: '0.8rem',
                 }}
               >
-                <button
-                  type="button"
-                  onClick={handleSave}
-                  style={{
-                    border: 'none',
-                    borderRadius: '999px',
-                    padding: '0.4rem 0.9rem',
-                    fontSize: '0.85rem',
-                    fontWeight: 500,
-                    background: '#38bdf8',
-                    color: '#020617',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {currentId ? 'Save changes' : 'Add note'}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleSummarize}
-                  style={{
-                    borderRadius: '999px',
-                    padding: '0.4rem 0.9rem',
-                    fontSize: '0.85rem',
-                    background: '#020617',
-                    border: '1px solid #4b5563',
-                    color: '#e5e7eb',
-                    cursor: 'pointer',
-                  }}
-                >
-                  AI Summarize (fake)
-                </button>
-              </div>
-
-              {summary && (
                 <div
                   style={{
-                    marginTop: '0.6rem',
-                    padding: '0.5rem 0.6rem',
-                    borderRadius: '0.6rem',
-                    border: '1px dashed #4b5563',
-                    fontSize: '0.8rem',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '0.2rem',
+                  }}
+                >
+                  <span
+                    style={{
+                      textTransform: 'uppercase',
+                      fontSize: '0.7rem',
+                      letterSpacing: '0.12em',
+                      color: '#9ca3af',
+                    }}
+                  >
+                    Generated summary
+                  </span>
+                  <span
+                    style={{
+                      fontSize: '0.7rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.12em',
+                      color: '#38bdf8',
+                    }}
+                  >
+                    mock
+                  </span>
+                </div>
+                <p style={{ margin: 0 }}>{summary}</p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Right: notes list */}
+        <section
+          style={{
+            padding: '1rem',
+            borderRadius: '0.75rem',
+            background: '#020617',
+            border: '1px solid #1f2937',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem',
+              marginBottom: '0.6rem',
+            }}
+          >
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search notes..."
+              style={{
+                width: '100%',
+                padding: '0.45rem 0.7rem',
+                borderRadius: '999px',
+                border: '1px solid #374151',
+                background: '#020617',
+                color: '#e5e7eb',
+                fontSize: '0.85rem',
+              }}
+            />
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '0.4rem',
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setActiveTag('all')}
+                style={{
+                  padding: '0.25rem 0.7rem',
+                  borderRadius: '999px',
+                  border: '1px solid',
+                  borderColor: activeTag === 'all' ? '#38bdf8' : '#4b5563',
+                  background: activeTag === 'all' ? '#0f172a' : 'transparent',
+                  color: activeTag === 'all' ? '#e5e7eb' : '#9ca3af',
+                  fontSize: '0.75rem',
+                  cursor: 'pointer',
+                }}
+              >
+                All
+              </button>
+              {allTags.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => setActiveTag(tag)}
+                  style={{
+                    padding: '0.25rem 0.7rem',
+                    borderRadius: '999px',
+                    border: '1px solid',
+                    borderColor: activeTag === tag ? '#38bdf8' : '#4b5563',
+                    background: activeTag === tag ? '#0f172a' : 'transparent',
+                    color: activeTag === tag ? '#e5e7eb' : '#9ca3af',
+                    fontSize: '0.75rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  #{tag}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {filteredNotes.length === 0 ? (
+            <div
+              style={{
+                fontSize: '0.9rem',
+                color: '#9ca3af',
+                marginTop: '0.5rem',
+              }}
+            >
+              No notes yet. Start by writing something on the left 👈
+            </div>
+          ) : (
+            <div
+              style={{
+                display: 'grid',
+                gap: '0.6rem',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+              }}
+            >
+              {filteredNotes.map((note) => (
+                <article
+                  key={note.id}
+                  style={{
+                    padding: '0.7rem 0.75rem',
+                    borderRadius: '0.7rem',
+                    border: '1px solid',
+                    borderColor: note.pinned ? '#eab308' : '#374151',
+                    background: '#020617',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.4rem',
+                    minHeight: '110px',
                   }}
                 >
                   <div
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      marginBottom: '0.2rem',
+                      gap: '0.4rem',
+                    }}
+                  >
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontSize: '0.9rem',
+                      }}
+                    >
+                      {note.title}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => togglePin(note.id)}
+                      title={note.pinned ? 'Unpin' : 'Pin'}
+                      style={{
+                        border: 'none',
+                        background: 'transparent',
+                        cursor: 'pointer',
+                        fontSize: '1.1rem',
+                      }}
+                    >
+                      {note.pinned ? '📌' : '📍'}
+                    </button>
+                  </div>
+
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: '0.85rem',
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    {note.content.length > 220
+                      ? note.content.slice(0, 220) + '...'
+                      : note.content}
+                  </p>
+
+                  {note.tags && note.tags.length > 0 && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '0.3rem',
+                      }}
+                    >
+                      {note.tags.map((t) => (
+                        <span
+                          key={t}
+                          style={{
+                            fontSize: '0.7rem',
+                            padding: '0.15rem 0.5rem',
+                            borderRadius: '999px',
+                            border: '1px solid #4b5563',
+                            color: '#9ca3af',
+                          }}
+                        >
+                          #{t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginTop: '0.3rem',
+                      gap: '0.4rem',
                     }}
                   >
                     <span
                       style={{
-                        textTransform: 'uppercase',
                         fontSize: '0.7rem',
-                        letterSpacing: '0.12em',
                         color: '#9ca3af',
                       }}
                     >
-                      Generated summary
+                      Updated{' '}
+                      {new Date(note.updatedAt).toLocaleString(undefined, {
+                        dateStyle: 'short',
+                        timeStyle: 'short',
+                      })}
                     </span>
-                    <span
-                      style={{
-                        fontSize: '0.7rem',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.12em',
-                        color: '#38bdf8',
-                      }}
-                    >
-                      mock
-                    </span>
-                  </div>
-                  <p style={{ margin: 0 }}>{summary}</p>
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Right: notes list */}
-          <section
-            style={{
-              padding: '1rem',
-              borderRadius: '0.75rem',
-              background: '#020617',
-              border: '1px solid #1f2937',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.5rem',
-                marginBottom: '0.6rem',
-              }}
-            >
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search notes..."
-                style={{
-                  width: '100%',
-                  padding: '0.45rem 0.7rem',
-                  borderRadius: '999px',
-                  border: '1px solid #374151',
-                  background: '#020617',
-                  color: '#e5e7eb',
-                  fontSize: '0.85rem',
-                }}
-              />
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '0.4rem',
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => setActiveTag('all')}
-                  style={{
-                    padding: '0.25rem 0.7rem',
-                    borderRadius: '999px',
-                    border: '1px solid',
-                    borderColor: activeTag === 'all' ? '#38bdf8' : '#4b5563',
-                    background: activeTag === 'all' ? '#0f172a' : 'transparent',
-                    color: activeTag === 'all' ? '#e5e7eb' : '#9ca3af',
-                    fontSize: '0.75rem',
-                    cursor: 'pointer',
-                  }}
-                >
-                  All
-                </button>
-                {allTags.map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => setActiveTag(tag)}
-                    style={{
-                      padding: '0.25rem 0.7rem',
-                      borderRadius: '999px',
-                      border: '1px solid',
-                      borderColor: activeTag === tag ? '#38bdf8' : '#4b5563',
-                      background: activeTag === tag ? '#0f172a' : 'transparent',
-                      color: activeTag === tag ? '#e5e7eb' : '#9ca3af',
-                      fontSize: '0.75rem',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    #{tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {filteredNotes.length === 0 ? (
-              <div
-                style={{
-                  fontSize: '0.9rem',
-                  color: '#9ca3af',
-                  marginTop: '0.5rem',
-                }}
-              >
-                No notes yet. Start by writing something on the left 👈
-              </div>
-            ) : (
-              <div
-                style={{
-                  display: 'grid',
-                  gap: '0.6rem',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-                }}
-              >
-                {filteredNotes.map((note) => (
-                  <article
-                    key={note.id}
-                    style={{
-                      padding: '0.7rem 0.75rem',
-                      borderRadius: '0.7rem',
-                      border: '1px solid',
-                      borderColor: note.pinned ? '#eab308' : '#374151',
-                      background: '#020617',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '0.4rem',
-                      minHeight: '110px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        gap: '0.4rem',
-                      }}
-                    >
-                      <h3
-                        style={{
-                          margin: 0,
-                          fontSize: '0.9rem',
-                        }}
-                      >
-                        {note.title}
-                      </h3>
+                    <div style={{ display: 'flex', gap: '0.25rem' }}>
                       <button
                         type="button"
-                        onClick={() => togglePin(note.id)}
-                        title={note.pinned ? 'Unpin' : 'Pin'}
+                        onClick={() => handleEdit(note)}
                         style={{
-                          border: 'none',
+                          fontSize: '0.75rem',
+                          padding: '0.2rem 0.5rem',
+                          borderRadius: '999px',
+                          border: '1px solid #4b5563',
                           background: 'transparent',
+                          color: '#e5e7eb',
                           cursor: 'pointer',
-                          fontSize: '1.1rem',
                         }}
                       >
-                        {note.pinned ? '📌' : '📍'}
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(note.id)}
+                        style={{
+                          fontSize: '0.75rem',
+                          padding: '0.2rem 0.5rem',
+                          borderRadius: '999px',
+                          border: '1px solid #f97373',
+                          background: 'transparent',
+                          color: '#fecaca',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Delete
                       </button>
                     </div>
-
-                    <p
-                      style={{
-                        margin: 0,
-                        fontSize: '0.85rem',
-                        whiteSpace: 'pre-wrap',
-                      }}
-                    >
-                      {note.content.length > 220
-                        ? note.content.slice(0, 220) + '...'
-                        : note.content}
-                    </p>
-
-                    {note.tags && note.tags.length > 0 && (
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          gap: '0.3rem',
-                        }}
-                      >
-                        {note.tags.map((t) => (
-                          <span
-                            key={t}
-                            style={{
-                              fontSize: '0.7rem',
-                              padding: '0.15rem 0.5rem',
-                              borderRadius: '999px',
-                              border: '1px solid #4b5563',
-                              color: '#9ca3af',
-                            }}
-                          >
-                            #{t}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginTop: '0.3rem',
-                        gap: '0.4rem',
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: '0.7rem',
-                          color: '#9ca3af',
-                        }}
-                      >
-                        Updated{' '}
-                        {new Date(note.updatedAt).toLocaleString(undefined, {
-                          dateStyle: 'short',
-                          timeStyle: 'short',
-                        })}
-                      </span>
-                      <div style={{ display: 'flex', gap: '0.25rem' }}>
-                        <button
-                          type="button'
-                          onClick={() => handleEdit(note)}
-                          style={{
-                            fontSize: '0.75rem',
-                            padding: '0.2rem 0.5rem',
-                            borderRadius: '999px',
-                            border: '1px solid #4b5563',
-                            background: 'transparent',
-                            color: '#e5e7eb',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDelete(note.id)}
-                          style={{
-                            fontSize: '0.75rem',
-                            padding: '0.2rem 0.5rem',
-                            borderRadius: '999px',
-                            border: '1px solid #f97373',
-                            background: 'transparent',
-                            color: '#fecaca',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
-          </section>
-        </main>
-      </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+      </main>
     </div>
   );
 }
